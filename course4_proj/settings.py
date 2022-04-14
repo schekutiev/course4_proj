@@ -45,6 +45,7 @@ class Dev(Configuration):
     # Application definition
 
     INSTALLED_APPS = [
+        'gh.apps.GhConfig',
         'movies.apps.MoviesConfig',
         'django.contrib.admin',
         'django.contrib.auth',
