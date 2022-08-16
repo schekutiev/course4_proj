@@ -17,7 +17,7 @@ import os
 
 class Dev(Configuration):
 
-    OMDB_KEY=''
+    OMDB_KEY='c24c2c7d'
 
     # Build paths inside the project like this: BASE_DIR / 'subdir'.
     BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,10 +32,18 @@ class Dev(Configuration):
     # SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = True
 
-    ALLOWED_HOSTS = values.ListValue(["localhost", "0.0.0.0", ".codio.io", os.environ.get('CODIO_HOSTNAME') + '-8000.codio.io'])
+    ALLOWED_HOSTS = values.ListValue([
+            "localhost", 
+            "0.0.0.0", 
+            ".codio.io", 
+            os.environ.get('CODIO_HOSTNAME') + '-8000.codio.io',
+        ])
     X_FRAME_OPTIONS = "ALLOW-FROM " + os.environ.get("CODIO_HOSTNAME") + "-8000.codio.io"
     CSRF_COOKIE_SAMESITE = None
-    CSRF_TRUSTED_ORIGINS = [os.environ.get("CODIO_HOSTNAME") + "-8000.codio.io"]
+    CSRF_TRUSTED_ORIGINS = [
+            os.environ.get("CODIO_HOSTNAME") + 
+            "-8000.codio.io"
+        ]
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SAMESITE = "None"
@@ -45,14 +53,17 @@ class Dev(Configuration):
     # Application definition
 
     INSTALLED_APPS = [
-        'gh.apps.GhConfig',
-        'movies.apps.MoviesConfig',
         'django.contrib.admin',
         'django.contrib.auth',
         'django.contrib.contenttypes',
         'django.contrib.sessions',
         'django.contrib.messages',
         'django.contrib.staticfiles',
+        # local apps
+        'gh.apps.GhConfig',
+        'movies.apps.MoviesConfig',
+        # 3rd
+        'django_celery_results',
     ]
 
     MIDDLEWARE = [
@@ -64,6 +75,9 @@ class Dev(Configuration):
         'django.contrib.messages.middleware.MessageMiddleware',
         # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
     ]
+
+    CELERY_RESULT_BACKEND = "django-db"
+    CELERY_BROKER_URL = "redis://localhost:6379/0"
 
     ROOT_URLCONF = 'course4_proj.urls'
 
